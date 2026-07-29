@@ -406,10 +406,10 @@ ${errorMsg}
 function getMainPage(lastSourceUrl, lastContent, historyList, currentUuid, subPassword) {
   var encodedUuid = encodeURIComponent(currentUuid || '');
   var sourceVal = escapeHtml(lastSourceUrl || '');
-  // 大文本不整段回填，避免页面膨胀到数 MB
-  var prefill = (lastContent && lastContent.length <= 50000) ? escapeHtml(lastContent) : '';
-  var bigNote = (lastContent && lastContent.length > 50000)
-    ? '<p class="hint">上次内容较大（' + lastContent.length + ' 字符），未自动回填，可重新粘贴或填写源链接后转换。</p>'
+  // 始终回填上次内容，方便返回首页后继续编辑 / 重新转换
+  var prefill = lastContent ? escapeHtml(lastContent) : '';
+  var bigNote = (lastContent && lastContent.length > 300000)
+    ? '<p class="hint">已回填上次内容（' + lastContent.length + ' 字符），内容较多时页面会偏大，属正常现象。</p>'
     : '';
 
   var historyCount = historyList.length;
